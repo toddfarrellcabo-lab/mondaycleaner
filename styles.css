@@ -80,6 +80,135 @@ body {
 
 .utility-header {
   display: grid;
+  grid-template-columns: 128px 128px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  min-height: 118px;
+  padding: 0 4px 10px;
+}
+
+.sparklight-lockup {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.sparklight-header-logo {
+  width: 118px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.sparklight-header-fallback {
+  display: none;
+  font-weight: 700;
+  color: #4C5458;
+  font-size: 19px;
+}
+
+.mascot-wrap {
+  position: relative;
+  align-self: stretch;
+  min-height: 108px;
+  overflow: visible;
+}
+
+.cleaner-mascot {
+  position: absolute;
+  left: -8px;
+  bottom: -16px;
+  width: 150px;
+  max-width: none;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 8px 12px rgba(55, 35, 65, .16));
+  pointer-events: none;
+}
+
+.tool-heading {
+  min-width: 0;
+  padding-left: 4px;
+}
+
+.tool-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+h1 {
+  margin: 0;
+  font-family: Effra, Arial, Helvetica, sans-serif;
+  font-size: clamp(25px, 3vw, 34px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: .015em;
+  white-space: nowrap;
+}
+
+.title-monday { color: #24252A; }
+.title-cleaner { color: var(--purple-dark); }
+
+.monday-context {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.for-label {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.monday-logo {
+  width: 72px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.tool-heading p {
+  margin: 7px 0 0;
+  max-width: 610px;
+  color: var(--muted);
+  line-height: 1.4;
+  font-size: 12.5px;
+}
+
+.guide-jump,
+.back-top {
+  color: var(--purple-dark);
+  font-weight: 700;
+  font-size: 12px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.guide-jump {
+  align-self: start;
+  margin-top: 12px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(101,48,102,.32);
+}
+
+.guide-jump:hover,
+.back-top:hover { color: var(--purple); }
+
+.cleaner-card {
+  position: relative;
+  z-index: 1;
+}
+
+.utility-header {
+  display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 20px;
@@ -506,54 +635,40 @@ button, .download { font: inherit; }
   }
 
   .utility-header {
-    grid-template-columns: auto 1fr;
-    align-items: start;
-    gap: 12px 14px;
+    grid-template-columns: 105px 86px minmax(0, 1fr);
+    gap: 8px 10px;
+    min-height: 96px;
   }
 
-  .sparklight-lockup {
-    min-width: auto;
+  .sparklight-header-logo { width: 100px; }
+
+  .mascot-wrap { min-height: 88px; }
+
+  .cleaner-mascot {
+    width: 110px;
+    left: -7px;
+    bottom: -10px;
   }
 
-  .sparklight-header-logo {
-    width: 104px;
-  }
-
-  .tool-heading {
-    padding-top: 1px;
-  }
-
-  .tool-title-row {
-    gap: 9px;
-    flex-wrap: wrap;
-  }
+  .tool-heading { padding-left: 0; }
+  .tool-title-row { gap: 7px; }
 
   h1 {
     white-space: normal;
-    font-size: clamp(22px, 6.4vw, 29px);
+    font-size: clamp(22px, 5.8vw, 29px);
   }
 
-  .monday-context {
-    margin-top: 2px;
-  }
-
-  .monday-logo {
-    width: 66px;
-  }
+  .monday-logo { width: 62px; }
 
   .guide-jump {
-    grid-column: 2;
-    margin: 0 0 2px;
+    grid-column: 3;
+    margin: -2px 0 4px;
     justify-self: start;
   }
 
-  .quickstart {
-    margin-top: 32px;
-  }
+  .quickstart { margin-top: 32px; }
 
-  .gif-frame {
-    display: none;
-  }
+  .gif-frame { display: none; }
 
   .mobile-gif-link {
     display: inline-flex;
@@ -567,17 +682,31 @@ button, .download { font: inherit; }
 
 @media (max-width: 520px) {
   .utility-header {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    min-height: 0;
   }
 
-  .sparklight-lockup,
-  .tool-heading,
-  .guide-jump {
-    grid-column: 1;
+  .sparklight-lockup { grid-column: 1; }
+
+  .mascot-wrap {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    width: 92px;
+    min-height: 92px;
   }
 
+  .cleaner-mascot {
+    width: 112px;
+    left: -12px;
+    bottom: -8px;
+  }
+
+  .tool-heading { grid-column: 1; }
+
   .guide-jump {
-    justify-self: start;
+    grid-column: 1 / -1;
+    margin-top: 5px;
   }
 
   .file-panel,
@@ -586,7 +715,5 @@ button, .download { font: inherit; }
     align-items: flex-start;
   }
 
-  .footer {
-    flex-direction: column;
-  }
+  .footer { flex-direction: column; }
 }

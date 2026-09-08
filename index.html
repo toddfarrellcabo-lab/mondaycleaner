@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light" />
-  <title>TheMondayCleaner</title>
+  <title>Monday Cleaner</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
@@ -25,16 +25,24 @@
           <span class="sparklight-header-fallback">Sparklight</span>
         </div>
 
+        <div class="mascot-wrap" aria-hidden="true">
+          <img
+            class="cleaner-mascot"
+            src="./assets/monday-cleaner-mascot.png"
+            alt=""
+          />
+        </div>
+
         <div class="tool-heading">
           <div class="tool-title-row">
-            <h1>The Monday Cleaner</h1>
+            <h1><span class="title-monday">Monday</span> <span class="title-cleaner">Cleaner</span></h1>
             <span class="monday-context" aria-label="for Monday.com">
               <span class="for-label">for</span>
               <img class="monday-logo" src="./assets/monday-logo.png" alt="monday.com" />
             </span>
           </div>
           <p>
-            Clean a Creative Requests Excel export into a working workbook.
+            Turns messy Creative Requests exports into clean working files.
             Processing stays local in your browser.
           </p>
         </div>
@@ -89,7 +97,7 @@
 
       <p class="quickstart-copy">
         In Monday.com, export the Creative Requests board to Excel, then bring that <strong>.xlsx</strong>
-        file back to TheMondayCleaner above. The guide below loops through the export step.
+        file back to Monday Cleaner above. The guide below loops through the export step.
       </p>
 
       <div id="quickstart-animation" class="quickstart-animation">
@@ -133,7 +141,7 @@
   </main>
 
   <noscript>
-    <div class="noscript">JavaScript is required to run TheMondayCleaner.</div>
+    <div class="noscript">JavaScript is required to run Monday Cleaner.</div>
   </noscript>
 
   <!-- ExcelJS handles .xlsx files entirely in the browser. Version pinned for consistency. -->

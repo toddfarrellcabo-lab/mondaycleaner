@@ -1,4 +1,4 @@
-# TheMondayCleaner
+# Monday Cleaner
 
 A browser-based utility that turns a Monday.com **Creative Requests** Excel export into the working workbook used by the Creative Services team.
 
@@ -22,7 +22,7 @@ The file is not posted to an application server. JavaScript reads it using the b
 ## Repository files
 
 ```text
-TheMondayCleaner/
+Monday Cleaner/
 ├── index.html
 ├── app.js
 ├── styles.css
@@ -37,7 +37,7 @@ The Excel processing library is **ExcelJS 4.4.0**, loaded from jsDelivr by `inde
 
 ## Publish with GitHub Pages
 
-1. Create a repository for **TheMondayCleaner**.
+1. Create a repository for **Monday Cleaner**.
 2. Upload the files from this package to the root of the repository.
 3. Commit/push them to your default branch.
 4. In the repository's GitHub Pages settings, publish the site from the root of that branch.
@@ -48,7 +48,7 @@ If your organization restricts GitHub Pages, use the approved internal/static ho
 ## Normal use
 
 1. Export the Creative Requests board from Monday.com as Excel.
-2. Open TheMondayCleaner site.
+2. Open Monday Cleaner site.
 3. Drag the `.xlsx` export onto the page or choose it.
 4. Click **Clean Monday Export**.
 5. Download the generated `MM-DD-YY_CR_ToDos.xlsx`.
@@ -94,7 +94,7 @@ Footer line: `a Problematic solution 2026.`
 ## Header / responsive QuickStart
 
 The page header now follows the compact utility pattern used by the Creative Services DCO Builder:
-Sparklight is the owning brand at left, TheMondayCleaner is the main title, and a small Monday.com
+Sparklight is the owning brand at left, Monday Cleaner is the main title, and a small Monday.com
 mark sits beside the tool name to identify the source platform.
 
 The title uses `Effra` when it is installed on the user's machine and automatically falls back to Arial.
@@ -119,3 +119,13 @@ No HTML change is required. The page attempts to load the GIF first and falls ba
 preview only if the GIF is missing.
 
 The top-right **Jump to QuickStart Guide** link now targets the animation container directly.
+
+
+## Header mascot
+
+The current header uses:
+
+`assets/monday-cleaner-mascot.png`
+
+The title, Monday.com logo, Sparklight logo, QuickStart link, and tool controls remain live HTML/CSS.
+The browser/page title is `Monday Cleaner`.
