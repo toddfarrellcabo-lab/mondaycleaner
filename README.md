@@ -102,3 +102,20 @@ The title uses `Effra` when it is installed on the user's machine and automatica
 On desktop, `assets/Exp-Mon.gif` renders normally and loops as an animated GIF.
 On screens 760px wide or smaller, the embedded GIF is hidden by default and the page shows an
 **Open QuickStart animation** link that opens the GIF directly in a new tab.
+
+
+## QuickStart GIF file
+
+The packaged source image that had been named `Exp-Mon.gif` was detected as a single-frame PNG,
+so it could not animate. It is now stored as:
+
+`assets/Exp-Mon-fallback.png`
+
+To enable the looping guide, place the real animated GIF in the repo as:
+
+`assets/Exp-Mon.gif`
+
+No HTML change is required. The page attempts to load the GIF first and falls back to the static
+preview only if the GIF is missing.
+
+The top-right **Jump to QuickStart Guide** link now targets the animation container directly.

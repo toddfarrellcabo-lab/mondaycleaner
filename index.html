@@ -16,7 +16,6 @@
 
       <header class="utility-header">
         <div class="sparklight-lockup">
-          <span class="sparklight-slash" aria-hidden="true"></span>
           <img
             class="sparklight-header-logo"
             src="https://edge.sitecorecloud.io/cableone177cb-residential803d-cableonepro4f42-a78b/media/Project/residential-website/sparklight/Logo.png?h=48&amp;iar=0&amp;w=190"
@@ -28,7 +27,7 @@
 
         <div class="tool-heading">
           <div class="tool-title-row">
-            <h1>TheMondayCleaner</h1>
+            <h1>The Monday Cleaner</h1>
             <span class="monday-context" aria-label="for Monday.com">
               <span class="for-label">for</span>
               <img class="monday-logo" src="./assets/monday-logo.png" alt="monday.com" />
@@ -40,7 +39,7 @@
           </p>
         </div>
 
-        <a class="guide-jump" href="#quickstart">Jump to QuickStart Guide ↓</a>
+        <a class="guide-jump" href="#quickstart-animation">Jump to QuickStart Guide ↓</a>
       </header>
 
       <section class="cleaner-card" aria-label="Monday export cleaner">
@@ -93,18 +92,30 @@
         file back to TheMondayCleaner above. The guide below loops through the export step.
       </p>
 
-      <div class="gif-frame">
-        <img src="./assets/Exp-Mon.gif" alt="Animated guide showing how to export the Creative Requests board from Monday.com" />
-      </div>
+      <div id="quickstart-animation" class="quickstart-animation">
+        <div class="gif-frame">
+          <img
+            id="quickstartGif"
+            src="./assets/Exp-Mon.gif"
+            alt="Animated guide showing how to export the Creative Requests board from Monday.com"
+            onerror="this.onerror=null;this.src='./assets/Exp-Mon-fallback.png';this.classList.add('using-fallback');document.getElementById('gifFallbackNote').hidden=false;"
+          />
+        </div>
 
-      <a
-        class="mobile-gif-link"
-        href="./assets/Exp-Mon.gif"
-        target="_blank"
-        rel="noopener"
-      >
-        Open QuickStart animation ↗
-      </a>
+        <p id="gifFallbackNote" class="gif-fallback-note" hidden>
+          Static preview shown. Replace <strong>assets/Exp-Mon.gif</strong> with the animated GIF to restore the looping guide.
+        </p>
+
+        <a
+          class="mobile-gif-link"
+          href="./assets/Exp-Mon.gif"
+          target="_blank"
+          rel="noopener"
+          onclick="if(!document.getElementById('quickstartGif').src.toLowerCase().endsWith('.gif')){this.href='./assets/Exp-Mon-fallback.png';}"
+        >
+          Open QuickStart animation ↗
+        </a>
+      </div>
     </section>
 
     <footer class="footer">

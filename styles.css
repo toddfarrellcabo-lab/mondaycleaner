@@ -93,15 +93,6 @@ body {
   min-width: 138px;
 }
 
-.sparklight-slash {
-  width: 4px;
-  height: 34px;
-  display: inline-block;
-  background: linear-gradient(180deg, #8D3B90, #653066);
-  transform: skew(-15deg);
-  border-radius: 2px;
-}
-
 .sparklight-header-logo {
   width: 118px;
   height: auto;
@@ -130,7 +121,7 @@ body {
 h1 {
   margin: 0;
   font-family: Effra, Arial, Helvetica, sans-serif;
-  font-size: clamp(28px, 3.4vw, 38px);
+  font-size: clamp(24px, 3vw, 34px);
   font-weight: 700;
   line-height: 1;
   letter-spacing: .025em;
@@ -425,6 +416,10 @@ button, .download { font: inherit; }
   max-width: 730px;
 }
 
+.quickstart-animation {
+  scroll-margin-top: 24px;
+}
+
 .gif-frame {
   overflow: hidden;
   border-radius: 12px;
@@ -437,6 +432,13 @@ button, .download { font: inherit; }
   display: block;
   width: 100%;
   height: auto;
+}
+
+.gif-fallback-note {
+  margin: 9px 2px 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 .mobile-gif-link {
@@ -528,7 +530,7 @@ button, .download { font: inherit; }
 
   h1 {
     white-space: normal;
-    font-size: clamp(24px, 7vw, 31px);
+    font-size: clamp(22px, 6.4vw, 29px);
   }
 
   .monday-context {
