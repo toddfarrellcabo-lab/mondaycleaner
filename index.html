@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>TheMondayCleaner</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div class="brand-mark" aria-hidden="true">M</div>
+      <div>
+        <h1>TheMondayCleaner</h1>
+        <p class="subtitle">Turn a Monday.com Creative Requests export into a clean working workbook.</p>
+      </div>
+    </header>
+
+    <section class="privacy-banner" aria-label="Privacy">
+      <strong>Local processing:</strong> your Excel file stays in this browser. The app does not upload the workbook to GitHub or a server.
+    </section>
+
+    <section class="card">
+      <div id="dropZone" class="drop-zone" tabindex="0" role="button" aria-label="Choose Monday.com Excel export">
+        <div class="drop-icon">⇩</div>
+        <h2>Choose a Monday.com export</h2>
+        <p>Drop the <strong>.xlsx</strong> file here, or choose it from your computer.</p>
+        <button id="chooseButton" type="button" class="secondary">Choose Excel File</button>
+        <input id="fileInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden />
+      </div>
+
+      <div id="filePanel" class="file-panel hidden">
+        <div>
+          <div class="eyebrow">Selected file</div>
+          <div id="fileName" class="file-name"></div>
+          <div id="fileMeta" class="file-meta"></div>
+        </div>
+        <button id="changeButton" type="button" class="link-button">Change file</button>
+      </div>
+
+      <button id="cleanButton" type="button" class="primary" disabled>
+        Clean Monday Export
+      </button>
+
+      <div id="statusPanel" class="status-panel hidden" aria-live="polite">
+        <div id="spinner" class="spinner hidden" aria-hidden="true"></div>
+        <div>
+          <div id="statusTitle" class="status-title"></div>
+          <div id="statusText" class="status-text"></div>
+        </div>
+      </div>
+
+      <a id="downloadButton" class="download hidden" href="#">
+        Download Clean Workbook
+      </a>
+    </section>
+
+    <section class="details">
+      <h2>What it creates</h2>
+      <div class="feature-grid">
+        <div><strong>Status</strong><span>Prioritized working dashboard with links to each task.</span></div>
+        <div><strong>Updates</strong><span>Monday updates and replies mapped back to the parent request.</span></div>
+        <div><strong>Attachments</strong><span>Clickable references to exported Monday asset links.</span></div>
+        <div><strong>Task sheets</strong><span>One worksheet per creative request with linked management fields.</span></div>
+      </div>
+    </section>
+
+    <footer>
+      TheMondayCleaner · Browser edition
+    </footer>
+  </main>
+
+  <noscript>
+    <div class="noscript">JavaScript is required to run TheMondayCleaner.</div>
+  </noscript>
+
+  <!-- ExcelJS handles .xlsx files entirely in the browser. Version pinned for consistency. -->
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
