@@ -9,65 +9,92 @@
 </head>
 <body>
   <main class="shell">
-    <header class="hero">
-      <div class="brand-mark" aria-hidden="true">M</div>
-      <div>
-        <h1>TheMondayCleaner</h1>
-        <p class="subtitle">Turn a Monday.com Creative Requests export into a clean working workbook.</p>
-      </div>
-    </header>
 
-    <section class="privacy-banner" aria-label="Privacy">
-      <strong>Local processing:</strong> your Excel file stays in this browser. The app does not upload the workbook to GitHub or a server.
-    </section>
+    <section class="hero">
+      <div class="hero-glow hero-glow-one" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-two" aria-hidden="true"></div>
 
-    <section class="card">
-      <div id="dropZone" class="drop-zone" tabindex="0" role="button" aria-label="Choose Monday.com Excel export">
-        <div class="drop-icon">⇩</div>
-        <h2>Choose a Monday.com export</h2>
-        <p>Drop the <strong>.xlsx</strong> file here, or choose it from your computer.</p>
-        <button id="chooseButton" type="button" class="secondary">Choose Excel File</button>
-        <input id="fileInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden />
-      </div>
-
-      <div id="filePanel" class="file-panel hidden">
-        <div>
-          <div class="eyebrow">Selected file</div>
-          <div id="fileName" class="file-name"></div>
-          <div id="fileMeta" class="file-meta"></div>
+      <header class="topbar">
+        <div class="title-lockup">
+          <img class="monday-logo" src="./assets/monday-logo.png" alt="monday.com" />
+          <div>
+            <h1>TheMondayCleaner</h1>
+            <p>
+              Turn a Monday.com Creative Requests Excel export into a clean working workbook.
+              Everything is processed locally in your browser.
+            </p>
+          </div>
         </div>
-        <button id="changeButton" type="button" class="link-button">Change file</button>
-      </div>
 
-      <button id="cleanButton" type="button" class="primary" disabled>
-        Clean Monday Export
-      </button>
+        <a class="guide-jump" href="#quickstart">Jump to QuickStart Guide ↓</a>
+      </header>
 
-      <div id="statusPanel" class="status-panel hidden" aria-live="polite">
-        <div id="spinner" class="spinner hidden" aria-hidden="true"></div>
-        <div>
-          <div id="statusTitle" class="status-title"></div>
-          <div id="statusText" class="status-text"></div>
+      <section class="cleaner-card" aria-label="Monday export cleaner">
+        <div id="dropZone" class="drop-zone" tabindex="0" role="button" aria-label="Choose Monday.com Excel export">
+          <div class="drop-icon" aria-hidden="true">⇩</div>
+          <h2>Choose a Monday.com export</h2>
+          <p>Drop the <strong>.xlsx</strong> file here, or choose it from your computer.</p>
+          <button id="chooseButton" type="button" class="secondary">Choose Excel File</button>
+          <input id="fileInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden />
         </div>
-      </div>
 
-      <a id="downloadButton" class="download hidden" href="#">
-        Download Clean Workbook
-      </a>
+        <div id="filePanel" class="file-panel hidden">
+          <div>
+            <div class="eyebrow">Selected file</div>
+            <div id="fileName" class="file-name"></div>
+            <div id="fileMeta" class="file-meta"></div>
+          </div>
+          <button id="changeButton" type="button" class="link-button">Change file</button>
+        </div>
+
+        <button id="cleanButton" type="button" class="primary" disabled>
+          Clean Monday Export
+        </button>
+
+        <div id="statusPanel" class="status-panel hidden" aria-live="polite">
+          <div id="spinner" class="spinner hidden" aria-hidden="true"></div>
+          <div>
+            <div id="statusTitle" class="status-title"></div>
+            <div id="statusText" class="status-text"></div>
+          </div>
+        </div>
+
+        <a id="downloadButton" class="download hidden" href="#">
+          Download Clean Workbook
+        </a>
+      </section>
     </section>
 
-    <section class="details">
-      <h2>What it creates</h2>
-      <div class="feature-grid">
-        <div><strong>Status</strong><span>Prioritized working dashboard with links to each task.</span></div>
-        <div><strong>Updates</strong><span>Monday updates and replies mapped back to the parent request.</span></div>
-        <div><strong>Attachments</strong><span>Clickable references to exported Monday asset links.</span></div>
-        <div><strong>Task sheets</strong><span>One worksheet per creative request with linked management fields.</span></div>
+    <section id="quickstart" class="quickstart">
+      <div class="quickstart-heading">
+        <div>
+          <div class="eyebrow">Monday.com export</div>
+          <h2>QuickStart Guide</h2>
+        </div>
+        <a href="#top" class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top ↑</a>
+      </div>
+
+      <p class="quickstart-copy">
+        In Monday.com, export the Creative Requests board to Excel, then bring that <strong>.xlsx</strong>
+        file back to TheMondayCleaner above. The guide below loops through the export step.
+      </p>
+
+      <div class="gif-frame">
+        <img src="./assets/Exp-Mon.gif" alt="Animated guide showing how to export the Creative Requests board from Monday.com" />
       </div>
     </section>
 
-    <footer>
-      TheMondayCleaner · Browser edition
+    <footer class="footer">
+      <div class="footer-brand">
+        <img
+          class="sparklight-logo"
+          src="https://edge.sitecorecloud.io/cableone177cb-residential803d-cableonepro4f42-a78b/media/Project/residential-website/sparklight/Logo.png?h=40&amp;iar=0&amp;w=160"
+          alt="Sparklight"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='inline';"
+        />
+        <span class="sparklight-fallback">Sparklight</span>
+      </div>
+      <div class="problematic">a Problematic solution 2026.</div>
     </footer>
   </main>
 

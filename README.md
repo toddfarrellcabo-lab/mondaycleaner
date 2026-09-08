@@ -27,7 +27,10 @@ TheMondayCleaner/
 ├── app.js
 ├── styles.css
 ├── README.md
-└── .nojekyll
+├── .nojekyll
+└── assets/
+    ├── monday-logo.png
+    └── Exp-Mon.gif
 ```
 
 The Excel processing library is **ExcelJS 4.4.0**, loaded from jsDelivr by `index.html`.
@@ -73,3 +76,16 @@ Once GitHub Pages is live, updates are centralized: modify the repository and pu
 ## Browser support
 
 Use a current desktop version of Microsoft Edge or Google Chrome. Large Monday exports may take several seconds to process because the entire Excel workbook is handled in-browser.
+
+
+## Page branding / QuickStart
+
+The page uses the included `assets/monday-logo.png` in the header and `assets/Exp-Mon.gif`
+for the looping QuickStart area. The top-right **Jump to QuickStart Guide** link scrolls
+directly to that section.
+
+The small Sparklight logo in the footer currently uses Sparklight's official website image URL.
+If you prefer a fully self-contained repo, add an approved Sparklight logo to `assets/` and
+change the footer image source in `index.html` to that local file.
+
+Footer line: `a Problematic solution 2026.`
