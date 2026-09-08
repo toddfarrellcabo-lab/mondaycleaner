@@ -89,3 +89,16 @@ If you prefer a fully self-contained repo, add an approved Sparklight logo to `a
 change the footer image source in `index.html` to that local file.
 
 Footer line: `a Problematic solution 2026.`
+
+
+## Header / responsive QuickStart
+
+The page header now follows the compact utility pattern used by the Creative Services DCO Builder:
+Sparklight is the owning brand at left, TheMondayCleaner is the main title, and a small Monday.com
+mark sits beside the tool name to identify the source platform.
+
+The title uses `Effra` when it is installed on the user's machine and automatically falls back to Arial.
+
+On desktop, `assets/Exp-Mon.gif` renders normally and loops as an animated GIF.
+On screens 760px wide or smaller, the embedded GIF is hidden by default and the page shows an
+**Open QuickStart animation** link that opens the GIF directly in a new tab.

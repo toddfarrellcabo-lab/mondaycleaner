@@ -10,7 +10,7 @@
   --green: #2f7748;
   --soft-purple: #f3edf5;
   --soft-blue: #eef7fa;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Effra, Arial, Helvetica, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -71,7 +71,122 @@ body {
   background: radial-gradient(circle, rgba(0,184,216,.11), rgba(0,184,216,0) 72%);
 }
 
-.topbar,
+
+.utility-header,
+.cleaner-card {
+  position: relative;
+  z-index: 1;
+}
+
+.utility-header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  padding: 2px 4px 18px;
+}
+
+.sparklight-lockup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 138px;
+}
+
+.sparklight-slash {
+  width: 4px;
+  height: 34px;
+  display: inline-block;
+  background: linear-gradient(180deg, #8D3B90, #653066);
+  transform: skew(-15deg);
+  border-radius: 2px;
+}
+
+.sparklight-header-logo {
+  width: 118px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.sparklight-header-fallback {
+  display: none;
+  font-weight: 700;
+  color: #4C5458;
+  font-size: 19px;
+}
+
+.tool-heading {
+  min-width: 0;
+}
+
+.tool-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+h1 {
+  margin: 0;
+  font-family: Effra, Arial, Helvetica, sans-serif;
+  font-size: clamp(28px, 3.4vw, 38px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: .025em;
+  white-space: nowrap;
+}
+
+.monday-context {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.for-label {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.monday-logo {
+  width: 74px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.tool-heading p {
+  margin: 6px 0 0;
+  max-width: 610px;
+  color: var(--muted);
+  line-height: 1.4;
+  font-size: 13px;
+}
+
+.guide-jump,
+.back-top {
+  color: var(--purple-dark);
+  font-weight: 700;
+  font-size: 12px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.guide-jump {
+  align-self: start;
+  margin-top: 4px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(101,48,102,.32);
+}
+
+.guide-jump:hover,
+.back-top:hover { color: var(--purple); }
+
 .cleaner-card {
   position: relative;
   z-index: 1;
@@ -324,6 +439,15 @@ button, .download { font: inherit; }
   height: auto;
 }
 
+.mobile-gif-link {
+  display: none;
+  margin-top: 12px;
+  color: var(--purple-dark);
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 13px;
+}
+
 .footer {
   margin-top: 38px;
   padding: 20px 0 2px;
@@ -369,23 +493,98 @@ button, .download { font: inherit; }
 }
 
 @media (max-width: 760px) {
-  .shell { width: min(100% - 20px, 980px); margin-top: 10px; }
-  .hero { padding: 14px; border-radius: 16px; }
-  .topbar { display: block; }
-  .title-lockup { align-items: flex-start; }
-  .monday-logo { width: 105px; margin-top: 3px; }
-  .guide-jump { display: inline-block; margin: 16px 0 0 123px; }
-  .quickstart { margin-top: 32px; }
+  .shell {
+    width: min(100% - 20px, 980px);
+    margin-top: 10px;
+  }
+
+  .hero {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .utility-header {
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: 12px 14px;
+  }
+
+  .sparklight-lockup {
+    min-width: auto;
+  }
+
+  .sparklight-header-logo {
+    width: 104px;
+  }
+
+  .tool-heading {
+    padding-top: 1px;
+  }
+
+  .tool-title-row {
+    gap: 9px;
+    flex-wrap: wrap;
+  }
+
+  h1 {
+    white-space: normal;
+    font-size: clamp(24px, 7vw, 31px);
+  }
+
+  .monday-context {
+    margin-top: 2px;
+  }
+
+  .monday-logo {
+    width: 66px;
+  }
+
+  .guide-jump {
+    grid-column: 2;
+    margin: 0 0 2px;
+    justify-self: start;
+  }
+
+  .quickstart {
+    margin-top: 32px;
+  }
+
+  .gif-frame {
+    display: none;
+  }
+
+  .mobile-gif-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid #cdbbd2;
+    border-radius: 8px;
+    background: #fff;
+  }
 }
 
 @media (max-width: 520px) {
-  .title-lockup { display: block; }
-  .monday-logo { width: 125px; margin-bottom: 13px; }
-  .guide-jump { margin-left: 0; }
+  .utility-header {
+    grid-template-columns: 1fr;
+  }
+
+  .sparklight-lockup,
+  .tool-heading,
+  .guide-jump {
+    grid-column: 1;
+  }
+
+  .guide-jump {
+    justify-self: start;
+  }
+
   .file-panel,
   .footer,
   .quickstart-heading {
     align-items: flex-start;
   }
-  .footer { flex-direction: column; }
+
+  .footer {
+    flex-direction: column;
+  }
 }
