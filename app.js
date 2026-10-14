@@ -223,51 +223,104 @@
   function buildUniversalWorkbook(input) {
     const out = new ExcelJS.Workbook();
     out.creator = "Monday Cleaner";
-    let total = 0;
-    const previews = [];
+    const overview = out.addWorksheet("Overview", {views:[{state:"frozen",ySplit:1}]});
+    overview.properties.tabColor = {argb:"FFFFF2CC"};
+    overview.addRow(["#", "Item / Worksheet", "Source Board", "Status", "Details"]);
+    const usedNames = new Set(["overview"]);
+    const records = [];
+    const MAX_ITEM_TABS = 500;
+
     for (const source of input.worksheets) {
+      // Monday's Updates export is a separate event log, not a list of board items.
+      // Preserve it in a separate flat sheet below instead of making each update a task.
+      if (source.name.toLowerCase() === "updates") continue;
       const detected = detectUniversalHeader(source);
       if (!detected) continue;
-      const header = detected.row;
-      const used = detected.labels.map((x,i)=>x ? i+1 : 0).filter(Boolean);
+      const used = detected.labels.map((label,i) => label ? i+1 : 0).filter(Boolean);
       if (!used.length) continue;
-      const sheet = out.addWorksheet(source.name.slice(0,31), {views:[{state:"frozen",ySplit:1}]});
-      sheet.properties.tabColor = {argb:"FF8D3B91"};
-      const names = used.map(c => detected.labels[c-1]);
-      const seen = new Map();
-      const headers = names.map((name) => {
-        const n = (seen.get(name) || 0) + 1; seen.set(name,n);
-        return n > 1 ? `${name} (${n})` : name;
-      });
-      sheet.addRow(headers);
-      const previewRows=[];
-      for (let r=header+1;r<=source.rowCount;r++) {
+      const headers = used.map(c => detected.labels[c-1]);
+      const nameIndex = headers.findIndex(h => /^(name|item name|task|title)$/i.test(h.trim()));
+      const statusIndex = headers.findIndex(h => /^status$/i.test(h.trim()));
+      for (let r=detected.row+1; r<=source.rowCount; r++) {
         const values=used.map(c => rawValue(source.getCell(r,c)));
         if (values.every(v => v === "" || v == null)) continue;
-        const cleaned=values.map(v => {
-          if (v instanceof Date) return v;
-          if (typeof v === "number" || typeof v === "boolean") return v;
-          return String(v ?? "").trim();
-        });
-        sheet.addRow(cleaned);
-        total++;
-        if (previewRows.length<100) previewRows.push(cleaned.map(v=>v instanceof Date?v.toLocaleDateString():String(v??"")));
+        // Avoid turning Monday's nested 'Subitems / Name' heading into a task.
+        if (String(values[0] ?? "").trim().toLowerCase() === "subitems" &&
+            values.some(v => String(v ?? "").trim().toLowerCase() === "name")) continue;
+        const label = String(values[nameIndex >= 0 ? nameIndex : 0] ?? "").trim() || `Item ${records.length+1}`;
+        records.push({source:source.name, headers, values, label,
+          status:statusIndex >= 0 ? String(values[statusIndex] ?? "") : ""});
       }
-      sheet.getRow(1).eachCell(cell => {
-        cell.font={bold:true,color:{argb:"FFFFFFFF"}};
-        cell.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF67336E"}};
-        cell.alignment={vertical:"middle",wrapText:true};
-      });
-      sheet.getRow(1).height=32;
-      sheet.columns.forEach((column,i)=>{
-        const samples=previewRows.slice(0,60).map(row=>row[i]?.length||0);
-        column.width=Math.min(55,Math.max(14,headers[i].length+3,...samples.map(x=>Math.min(x+2,55))));
-      });
-      if (sheet.rowCount>1) sheet.autoFilter={from:{row:1,column:1},to:{row:sheet.rowCount,column:headers.length}};
-      previews.push({name:sheet.name,headers,rows:previewRows,total:sheet.rowCount-1});
     }
-    if (!out.worksheets.length) throw new Error("Could not identify a table in this workbook. Check that the export contains column headings.");
-    return {workbook:out,rowCount:total,preview:previews};
+    if (!records.length) throw new Error("No Monday items found. Check that the export contains a table with column headings.");
+    if (records.length > MAX_ITEM_TABS) {
+      throw new Error(`This board contains ${records.length} items. Excel can become unstable with that many worksheets. Please export 500 or fewer items at a time.`);
+    }
+
+    records.forEach((item,i) => {
+      const tabName = safeSheetName(item.label, usedNames);
+      const ws = out.addWorksheet(tabName, {views:[{state:"frozen",ySplit:2}]});
+      ws.properties.tabColor = {argb:COLORS.taskTabs[i % COLORS.taskTabs.length]};
+      ws.columns = [{width:32},{width:95}];
+      ws.addRow(["← Back to Overview", item.label]);
+      const back = ws.getCell("A1");
+      back.value = {text:"← Back to Overview", hyperlink:"#'Overview'!A1"};
+      back.font = {name:"Arial",size:10,bold:true,color:{argb:COLORS.hyperlink},underline:true};
+      ws.getCell("B1").font={name:"Arial",size:14,bold:true,color:{argb:"FF67336E"}};
+      ws.getRow(1).height=30;
+      ws.addRow(["Field", "Value"]);
+      ws.getRow(2).height=25;
+      ws.getRow(2).eachCell(cell=>{
+        cell.font={name:"Arial",bold:true,color:{argb:COLORS.white}};
+        cell.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF67336E"}};
+      });
+      item.headers.forEach((field,j) => {
+        const value=item.values[j];
+        const row=ws.addRow([field, value == null ? "" : value]);
+        row.getCell(1).font={name:"Arial",size:10,bold:true,color:{argb:"FF392D40"}};
+        row.getCell(1).fill={type:"pattern",pattern:"solid",fgColor:{argb:COLORS.labelFill}};
+        row.getCell(2).font={name:"Arial",size:10};
+        row.eachCell(cell=>{cell.alignment={vertical:"top",wrapText:true};});
+        row.height=30;
+        if (value instanceof Date) row.getCell(2).numFmt="mm/dd/yyyy";
+        if (i % 2 === 1) row.getCell(2).fill={type:"pattern",pattern:"solid",fgColor:{argb:"FFF9F8FA"}};
+      });
+      const summary = overview.addRow([i+1, item.label, item.source, item.status, `${item.headers.length} fields`]);
+      summary.getCell(2).value={text:item.label,hyperlink:`#'${tabName.replace(/'/g,"''")}'!A1`};
+      summary.getCell(2).font={name:"Arial",size:10,color:{argb:COLORS.hyperlink},underline:true};
+    });
+
+    overview.columns=[{width:8},{width:48},{width:30},{width:22},{width:18}];
+    overview.getRow(1).height=28;
+    overview.getRow(1).eachCell(cell=>{
+      cell.font={name:"Arial",bold:true,color:{argb:COLORS.white}};
+      cell.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF67336E"}};
+    });
+    overview.autoFilter={from:{row:1,column:1},to:{row:overview.rowCount,column:5}};
+    overview.eachRow((row,n)=>{if(n>1)row.height=22;});
+    // Keep an Updates export if present, as a separate flat reference sheet.
+    const updatesSource = input.worksheets.find(ws => ws.name.toLowerCase() === "updates");
+    if (updatesSource) {
+      const detected=detectUniversalHeader(updatesSource);
+      if (detected) {
+        const used=detected.labels.map((v,i)=>v?i+1:0).filter(Boolean);
+        const updates=out.addWorksheet(safeSheetName("Updates",usedNames));
+        updates.properties.tabColor={argb:COLORS.updatesTab};
+        updates.addRow(used.map(c=>detected.labels[c-1]));
+        for(let r=detected.row+1;r<=updatesSource.rowCount;r++){
+          const vals=used.map(c=>rawValue(updatesSource.getCell(r,c)));
+          if(vals.some(v=>v!==""&&v!=null))updates.addRow(vals);
+        }
+        updates.getRow(1).eachCell(cell=>{
+          cell.font={bold:true,color:{argb:COLORS.white}};
+          cell.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF67336E"}};
+        });
+        updates.columns=used.map((_,i)=>({width:Math.min(55,Math.max(18,String(detected.labels[used[i]-1]).length+3))}));
+        updates.views=[{state:"frozen",ySplit:1}];
+        if(updates.rowCount>1)updates.autoFilter={from:{row:1,column:1},to:{row:updates.rowCount,column:used.length}};
+      }
+    }
+    return {workbook:out,rowCount:records.length,preview:previewWorkbook(out)};
   }
 
   function previewWorkbook(workbook) {
