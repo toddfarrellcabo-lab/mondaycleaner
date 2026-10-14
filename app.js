@@ -33,6 +33,8 @@
   const downloadButton = document.getElementById("downloadButton");
 
   let selectedFile = null;
+  const modeSelect = document.getElementById("modeSelect");
+  const previewArea = document.getElementById("previewArea");
   let currentObjectUrl = null;
 
   chooseButton.addEventListener("click", (e) => {
@@ -69,6 +71,7 @@
 
   function setFile(file) {
     resetDownload();
+    previewArea.replaceChildren();
     if (!file.name.toLowerCase().endsWith(".xlsx")) {
       showStatus("That isn't an .xlsx file.", "Choose the Excel export from Monday.com.", false, true);
       selectedFile = null;
@@ -136,6 +139,19 @@
       const creativeSheet = findSheet(inputWorkbook, "creative requests") || inputWorkbook.worksheets[0];
       if (!creativeSheet) throw new Error("No worksheets were found in the Excel file.");
 
+      const detectedCreative = hasCreativeHeaders(creativeSheet);
+      const selectedMode = modeSelect.value;
+      const useCreative = selectedMode === "creative" || (selectedMode === "auto" && detectedCreative);
+      if (selectedMode === "creative" && !detectedCreative) {
+        throw new Error("This file does not contain the required Creative Requests columns. Choose Universal or Auto mode.");
+      }
+      if (!useCreative) {
+        showStatus("Cleaning general Monday export…", "Detecting headers and preserving all available columns.", true);
+        await new Promise(resolve => setTimeout(resolve, 20));
+        const general = buildUniversalWorkbook(inputWorkbook);
+        await publishWorkbook(general.workbook, general.rowCount, "Universal Monday mode", general.preview);
+        return;
+      }
       const requests = parseRequests(creativeSheet);
       if (!requests.length) {
         throw new Error("No creative request rows were found. Make sure this is the Monday Creative Requests export.");
@@ -151,6 +167,18 @@
       await new Promise(resolve => setTimeout(resolve, 20));
 
       const outputWorkbook = buildWorkbook(requests, updates);
+      await publishWorkbook(outputWorkbook, requests.length, "Creative Requests mode", previewWorkbook(outputWorkbook));
+      const attachmentCount = collectAttachments(requests).length;
+      showStatus("Ready! Creative Requests mode", `${requests.length} requests · ${updates.length} updates/replies · ${attachmentCount} attachment references`, false);
+    } catch (err) {
+      console.error(err);
+      showStatus("Could not clean this workbook.", err?.message || String(err), false, true);
+    } finally {
+      cleanButton.disabled = !selectedFile;
+    }
+  }
+
+  async function publishWorkbook(outputWorkbook, count, label, preview) {
       const outputBuffer = await outputWorkbook.xlsx.writeBuffer();
       const blob = new Blob(
         [outputBuffer],
@@ -165,18 +193,112 @@
       downloadButton.textContent = `Download ${outputName}`;
       downloadButton.classList.remove("hidden");
 
-      const attachmentCount = collectAttachments(requests).length;
-      showStatus(
-        "Ready!",
-        `${requests.length} requests · ${updates.length} updates/replies · ${attachmentCount} attachment references`,
-        false
-      );
-    } catch (err) {
-      console.error(err);
-      showStatus("Could not clean this workbook.", err?.message || String(err), false, true);
-    } finally {
-      cleanButton.disabled = !selectedFile;
+      showStatus("Ready! " + label, `${count} rows processed. Review the preview or download the workbook.`, false);
+      renderPreview(preview);
+  }
+
+  function hasCreativeHeaders(ws) {
+    try { findHeaderRow(ws); return true; } catch (_) { return false; }
+  }
+
+  function detectUniversalHeader(ws) {
+    let best = null;
+    for (let r = 1; r <= Math.min(ws.rowCount, 35); r++) {
+      const labels = [];
+      for (let c = 1; c <= Math.min(ws.columnCount, 150); c++) {
+        const v = String(cleanText(textValue(ws.getCell(r, c))));
+        labels.push(v);
+      }
+      const nonempty = labels.filter(Boolean);
+      const normalized = nonempty.map(x => x.toLowerCase());
+      const unique = new Set(normalized);
+      const score = nonempty.length + (normalized.includes("name") ? 15 : 0) +
+        (normalized.includes("status") ? 6 : 0) + (normalized.includes("item id") ? 3 : 0) -
+        (nonempty.length - unique.size) * 2;
+      if (nonempty.length >= 2 && (!best || score > best.score)) best = {row:r,labels,score};
     }
+    return best;
+  }
+
+  function buildUniversalWorkbook(input) {
+    const out = new ExcelJS.Workbook();
+    out.creator = "Monday Cleaner";
+    let total = 0;
+    const previews = [];
+    for (const source of input.worksheets) {
+      const detected = detectUniversalHeader(source);
+      if (!detected) continue;
+      const header = detected.row;
+      const used = detected.labels.map((x,i)=>x ? i+1 : 0).filter(Boolean);
+      if (!used.length) continue;
+      const sheet = out.addWorksheet(source.name.slice(0,31), {views:[{state:"frozen",ySplit:1}]});
+      sheet.properties.tabColor = {argb:"FF8D3B91"};
+      const names = used.map(c => detected.labels[c-1]);
+      const seen = new Map();
+      const headers = names.map((name) => {
+        const n = (seen.get(name) || 0) + 1; seen.set(name,n);
+        return n > 1 ? `${name} (${n})` : name;
+      });
+      sheet.addRow(headers);
+      const previewRows=[];
+      for (let r=header+1;r<=source.rowCount;r++) {
+        const values=used.map(c => rawValue(source.getCell(r,c)));
+        if (values.every(v => v === "" || v == null)) continue;
+        const cleaned=values.map(v => {
+          if (v instanceof Date) return v;
+          if (typeof v === "number" || typeof v === "boolean") return v;
+          return String(v ?? "").trim();
+        });
+        sheet.addRow(cleaned);
+        total++;
+        if (previewRows.length<100) previewRows.push(cleaned.map(v=>v instanceof Date?v.toLocaleDateString():String(v??"")));
+      }
+      sheet.getRow(1).eachCell(cell => {
+        cell.font={bold:true,color:{argb:"FFFFFFFF"}};
+        cell.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF67336E"}};
+        cell.alignment={vertical:"middle",wrapText:true};
+      });
+      sheet.getRow(1).height=32;
+      sheet.columns.forEach((column,i)=>{
+        const samples=previewRows.slice(0,60).map(row=>row[i]?.length||0);
+        column.width=Math.min(55,Math.max(14,headers[i].length+3,...samples.map(x=>Math.min(x+2,55))));
+      });
+      if (sheet.rowCount>1) sheet.autoFilter={from:{row:1,column:1},to:{row:sheet.rowCount,column:headers.length}};
+      previews.push({name:sheet.name,headers,rows:previewRows,total:sheet.rowCount-1});
+    }
+    if (!out.worksheets.length) throw new Error("Could not identify a table in this workbook. Check that the export contains column headings.");
+    return {workbook:out,rowCount:total,preview:previews};
+  }
+
+  function previewWorkbook(workbook) {
+    return workbook.worksheets.map(ws=>{
+      const headers=[];
+      ws.getRow(1).eachCell({includeEmpty:true},c=>headers.push(String(rawValue(c)??"")));
+      const rows=[];
+      for(let r=2;r<=Math.min(ws.rowCount,101);r++) rows.push(headers.map((_,i)=>String(rawValue(ws.getCell(r,i+1))??"")));
+      return {name:ws.name,headers,rows,total:Math.max(0,ws.rowCount-1)};
+    });
+  }
+
+  function renderPreview(sheets) {
+    previewArea.replaceChildren();
+    if (!sheets.length) return;
+    const heading=document.createElement("h3");heading.textContent="Workbook preview";previewArea.append(heading);
+    const picker=document.createElement("select");picker.setAttribute("aria-label","Preview worksheet");
+    sheets.forEach((s,i)=>{const opt=document.createElement("option");opt.value=i;opt.textContent=`${s.name} (${s.total} rows)`;picker.append(opt);});
+    previewArea.append(picker);
+    const note=document.createElement("p");note.className="preview-note";previewArea.append(note);
+    const wrap=document.createElement("div");wrap.className="preview-scroll";previewArea.append(wrap);
+    function draw(){
+      const s=sheets[Number(picker.value)];wrap.replaceChildren();
+      note.textContent=`Showing up to 100 rows from ${s.name}. Download the Excel file for all rows and formatting.`;
+      const table=document.createElement("table");const thead=document.createElement("thead");const tr=document.createElement("tr");
+      s.headers.forEach(h=>{const th=document.createElement("th");th.textContent=h;tr.append(th);});thead.append(tr);table.append(thead);
+      const tbody=document.createElement("tbody");
+      s.rows.forEach(row=>{const tr=document.createElement("tr");row.forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.append(td);});tbody.append(tr);});
+      table.append(tbody);wrap.append(table);
+    }
+    picker.addEventListener("change",draw);draw();
   }
 
   function findSheet(workbook, name) {

@@ -1,11 +1,11 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="light" />
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://toddfarrellcabo-lab.github.io/mondaycleaner/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
   <title>Monday Cleaner</title>
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./Monday Cleaner_files/styles.css">
 </head>
 <body>
   <main class="shell">
@@ -16,21 +16,12 @@
 
       <header class="utility-header">
         <div class="sparklight-lockup">
-          <img
-            class="sparklight-header-logo"
-            src="https://edge.sitecorecloud.io/cableone177cb-residential803d-cableonepro4f42-a78b/media/Project/residential-website/sparklight/Logo.png?h=48&amp;iar=0&amp;w=190"
-            alt="Sparklight"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='inline';"
-          />
+          <img class="sparklight-header-logo" src="./Monday Cleaner_files/Logo.png" alt="Sparklight" onerror="this.style.display='none';this.nextElementSibling.style.display='inline';">
           <span class="sparklight-header-fallback">Sparklight</span>
         </div>
 
         <div class="mascot-wrap" aria-hidden="true">
-          <img
-            class="cleaner-mascot"
-            src="./assets/monday-cleaner-mascot.png"
-            alt=""
-          />
+          <img class="cleaner-mascot" src="./Monday Cleaner_files/monday-cleaner-mascot.png" alt="">
         </div>
 
         <div class="tool-heading">
@@ -38,7 +29,7 @@
             <h1><span class="title-monday">Monday</span> <span class="title-cleaner">Cleaner</span></h1>
             <span class="monday-context" aria-label="for Monday.com">
               <span class="for-label">for</span>
-              <img class="monday-logo" src="./assets/monday-logo.png" alt="monday.com" />
+              <img class="monday-logo" src="./Monday Cleaner_files/monday-logo.png" alt="monday.com">
             </span>
           </div>
           <p>
@@ -47,7 +38,7 @@
           </p>
         </div>
 
-        <a class="guide-jump" href="#quickstart-animation">Jump to QuickStart Guide ↓</a>
+        <a class="guide-jump" href="https://toddfarrellcabo-lab.github.io/mondaycleaner/#quickstart-animation">Jump to QuickStart Guide ↓</a>
       </header>
 
       <section class="cleaner-card" aria-label="Monday export cleaner">
@@ -56,7 +47,7 @@
           <h2>Choose a Monday.com export</h2>
           <p>Drop the <strong>.xlsx</strong> file here, or choose it from your computer.</p>
           <button id="chooseButton" type="button" class="secondary">Choose Excel File</button>
-          <input id="fileInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden />
+          <input id="fileInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden="">
         </div>
 
         <div id="filePanel" class="file-panel hidden">
@@ -68,7 +59,8 @@
           <button id="changeButton" type="button" class="link-button">Change file</button>
         </div>
 
-        <button id="cleanButton" type="button" class="primary" disabled>
+        <div class="mode-choice"><label for="modeSelect">Processing mode</label><select id="modeSelect"><option value="auto">Auto-detect (recommended)</option><option value="creative">Creative Requests</option><option value="universal">Universal Monday board</option></select></div>
+        <button id="cleanButton" type="button" class="primary" disabled="">
           Clean Monday Export
         </button>
 
@@ -80,9 +72,10 @@
           </div>
         </div>
 
-        <a id="downloadButton" class="download hidden" href="#">
+        <a id="downloadButton" class="download hidden" href="https://toddfarrellcabo-lab.github.io/mondaycleaner/#">
           Download Clean Workbook
         </a>
+        <div id="previewArea" class="preview-area"></div>
       </section>
     </section>
 
@@ -92,35 +85,24 @@
           <div class="eyebrow">Monday.com export</div>
           <h2>QuickStart Guide</h2>
         </div>
-        <a href="#top" class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top ↑</a>
+        <a href="https://toddfarrellcabo-lab.github.io/mondaycleaner/#top" class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top ↑</a>
       </div>
 
       <p class="quickstart-copy">
-        In Monday.com, export the Creative Requests board to Excel, then bring that <strong>.xlsx</strong>
-        file back to Monday Cleaner above. The guide below loops through the export step.
+        In Monday.com, export any Monday.com board to Excel, then bring that <strong>.xlsx</strong>
+        file back to Monday Cleaner above. Creative Requests exports retain their specialized formatting; other boards use Universal mode.
       </p>
 
       <div id="quickstart-animation" class="quickstart-animation">
         <div class="gif-frame">
-          <img
-            id="quickstartGif"
-            src="./assets/Exp-Mon.gif"
-            alt="Animated guide showing how to export the Creative Requests board from Monday.com"
-            onerror="this.onerror=null;this.src='./assets/Exp-Mon-fallback.png';this.classList.add('using-fallback');document.getElementById('gifFallbackNote').hidden=false;"
-          />
+          <img id="quickstartGif" src="./Monday Cleaner_files/Exp-Mon.gif" alt="Animated guide showing how to export the Creative Requests board from Monday.com" onerror="this.onerror=null;this.src='./assets/Exp-Mon-fallback.png';this.classList.add('using-fallback');document.getElementById('gifFallbackNote').hidden=false;">
         </div>
 
-        <p id="gifFallbackNote" class="gif-fallback-note" hidden>
+        <p id="gifFallbackNote" class="gif-fallback-note" hidden="">
           Static preview shown. Replace <strong>assets/Exp-Mon.gif</strong> with the animated GIF to restore the looping guide.
         </p>
 
-        <a
-          class="mobile-gif-link"
-          href="./assets/Exp-Mon.gif"
-          target="_blank"
-          rel="noopener"
-          onclick="if(!document.getElementById('quickstartGif').src.toLowerCase().endsWith('.gif')){this.href='./assets/Exp-Mon-fallback.png';}"
-        >
+        <a class="mobile-gif-link" href="./Monday Cleaner_files/Exp-Mon.gif" target="_blank" rel="noopener" onclick="if(!document.getElementById('quickstartGif').src.toLowerCase().endsWith('.gif')){this.href='./assets/Exp-Mon-fallback.png';}">
           Open QuickStart animation ↗
         </a>
       </div>
@@ -128,12 +110,7 @@
 
     <footer class="footer">
       <div class="footer-brand">
-        <img
-          class="sparklight-logo"
-          src="https://edge.sitecorecloud.io/cableone177cb-residential803d-cableonepro4f42-a78b/media/Project/residential-website/sparklight/Logo.png?h=40&amp;iar=0&amp;w=160"
-          alt="Sparklight"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='inline';"
-        />
+        <img class="sparklight-logo" src="./Monday Cleaner_files/Logo(1).png" alt="Sparklight" onerror="this.style.display='none';this.nextElementSibling.style.display='inline';">
         <span class="sparklight-fallback">Sparklight</span>
       </div>
       <div class="problematic">a Problematic solution 2026.</div>
@@ -145,7 +122,8 @@
   </noscript>
 
   <!-- ExcelJS handles .xlsx files entirely in the browser. Version pinned for consistency. -->
-  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
-  <script src="./app.js"></script>
-</body>
-</html>
+  <script src="./Monday Cleaner_files/exceljs.min.js"></script>
+  <script src="./Monday Cleaner_files/app.js?v=2"></script>
+
+
+</body></html>
