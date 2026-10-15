@@ -485,6 +485,16 @@
       if (!name && !firstCell) continue;
       if (!name) continue;
 
+      // Monday exports can repeat the column headings inside the data.
+      // Ignore only rows that clearly match several known header labels,
+      // rather than filtering legitimate requests named "Name".
+      const headerMatches = ["Name", "Status", "Due Date", "Creative Brief", "Requested by"]
+        .filter(label => {
+          const value = String(cleanText(val(r, label))).toLowerCase();
+          return value === label.toLowerCase();
+        }).length;
+      if (headerMatches >= 3) continue;
+
       const due = val(r, "Due Date");
       const status = String(cleanText(val(r, "Status")));
       const brief = String(cleanText(val(r, "Creative Brief")));
