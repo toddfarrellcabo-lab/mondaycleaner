@@ -811,7 +811,7 @@
     updatesWs.getCell("L1").value = { text: "← BACK TO STATUS", hyperlink: "#'Status'!A1" };
     setHyperlinkStyle(updatesWs.getCell("L1"), 8, true);
     updatesWs.getColumn(12).width = 20;
-    updatesWs.views = [{ state: "frozen", ySplit: 1 }];
+    updatesWs.views = [];
     updatesWs.autoFilter = { from: "A1", to: `J${Math.max(1, updatesWs.rowCount)}` };
 
     // Attachments
@@ -838,7 +838,7 @@
     attachmentsWs.getCell("H1").value = { text: "← BACK TO STATUS", hyperlink: "#'Status'!A1" };
     setHyperlinkStyle(attachmentsWs.getCell("H1"), 8, true);
     attachmentsWs.getColumn(8).width = 20;
-    attachmentsWs.views = [{ state: "frozen", ySplit: 1 }];
+    attachmentsWs.views = [];
     attachmentsWs.autoFilter = { from: "A1", to: `F${Math.max(1, attachmentsWs.rowCount)}` };
 
     // Individual task sheets
